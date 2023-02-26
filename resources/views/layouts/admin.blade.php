@@ -28,25 +28,40 @@
         <div class="border-end bg-white" id="sidebar-wrapper" aria-labelledby="offcanvasResponsiveLabel">
             <div class="sidebar-heading border-bottom bg-light">
                 {{-- Base Link --}}
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/admin') }}">
                     <img src="{{ asset('img/grade-sheet.png') }}" alt="Logo" style="width: 30px;">
                     Grades Viewer App
                 </a>
             </div>
             <div class="list-group list-group-flush">
-                <a class="list-group-item list-group-item-action list-group-item-light p-3 {{ url()->current() == route('admin.home') ? 'active' : '' }}" href="#!">
+                <a class="list-group-item list-group-item-action list-group-item-light p-3 {{ url()->current() == route('admin.home') ? 'active' : '' }}"
+                    href="/admin">
                     <span class="bi-menu-button-wide-fill me-2"></span> Dashboard</a>
-                <button class="list-group-item list-group-item-action list-group-item-light p-3 
-                    {{ in_array( url()->current(), array(route('admin.view-accounts'), route('admin.create-teacher'), route('admin.create-student')) ) ? 'active' : '' }}" 
-                    data-bs-toggle="dropdown" aria-expanded="false"> 
-                    <span class="bi-people-fill me-2"></span> Account Management <span class="bi-caret-right-fill ms-auto"></span>
+                <button
+                    class="list-group-item list-group-item-action list-group-item-light p-3 
+                    {{ in_array( url()->current(), [
+                        route('admin.view-accounts'),
+                        route('admin.create-teacher'),
+                        route('admin.create-student')
+                    ])
+                        ? 'active'
+                        : '' }}"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="bi-people-fill me-2"></span> Account Management <span
+                        class="bi-caret-right-fill ms-auto"></span>
                 </button>
                 <ul class="dropdown-menu ms-2">
                     <li><a class="dropdown-item" href="{{ route('admin.view-accounts') }}">View Accounts</a></li>
                     <li><a class="dropdown-item" href="{{ route('admin.create-teacher') }}">Create New Teacher</a></li>
                     <li><a class="dropdown-item" href="{{ route('admin.create-student') }}">Create New Student</a></li>
                 </ul>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Overview</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3 
+                    {{ url()->current() == route('admin.manage-department') || request()->is('admin/edit/*')
+                        ? 'active'
+                        : '' }}"
+                    href="{{ route('admin.manage-department') }}">
+                    <span class="bi-building me-2"></span> Department Management
+                </a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>

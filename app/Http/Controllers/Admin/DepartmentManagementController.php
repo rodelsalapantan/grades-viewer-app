@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Department;
 use Illuminate\Http\Request;
 
-class DepartmentManagement extends Controller
+class DepartmentManagementController extends Controller
 {
     public function index()
     {

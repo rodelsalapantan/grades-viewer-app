@@ -50,10 +50,13 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         //dd($user, $request);
-        
+        $alert = [
+            'message' => 'Login Successful!',
+            'type' => 'success'
+        ];
         switch(Auth::user()->role){
             case 'admin':
-                return redirect()->route('admin.home');
+                return redirect()->route('admin.home')->with(['alert' => $alert]);
             case 'teacher':
                 return redirect()->route('teacher.home');
             case 'student':

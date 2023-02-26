@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AccountManagementController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
@@ -17,13 +18,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 // entry point / landing page
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');                                                            // landing page
 
 // register all auth routes, except register
 Auth::routes([ 'register' => false,]);
 
 // admin routes
 Route::prefix('admin')->group(function(){
-    Route::get('/', [AdminController::class, 'index'])->name('admin.home');
-})->middleware(['role:admin', 'auth']);
+    Route::get('/', [AdminController::class, 'index'])->name('admin.home');                                                 // index
 
+    // Routes Account Management 
+    Route::get('/create-teacher', [AccountManagementController::class, 'createTeacher'])->name('admin.create-teacher');     // create teacher
+    Route::get('/create-student', [AccountManagementController::class, 'createStudent'])->name('admin.create-student');     // create student
+    Route::get('/view-accounts', [AccountManagementController::class, 'index'])->name('admin.view-accounts');               // view accounts
+
+})->middleware(['role:admin', 'auth']);

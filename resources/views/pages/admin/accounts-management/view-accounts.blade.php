@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Home | Admin')
+@section('title', 'Create Account | Admin')
 
 @section('content')
 
@@ -19,7 +19,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    Accounts View
+                    View Accounts
                 </div>
             </div>
         </div>

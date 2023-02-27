@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreTeacherRequest;
 use App\Models\Department;
+use App\Models\TeacherProfile;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AccountManagementController extends Controller
 {
@@ -14,9 +18,11 @@ class AccountManagementController extends Controller
      */
     public function index()
     {
-        $users = User::where('role', '!=', 'admin')->paginate(20);
-
-        return view('pages.admin.accounts-management.view-accounts', compact('users'));
+        $users = User::where('role', '!=', 'admin')->get();
+        $teachers = User::where('role', 'teacher')->paginate(10);
+        $students = User::where('role', 'student')->paginate(10);
+        //dd($students, $teachers);
+        return view('pages.admin.accounts-management.view-accounts', compact('users', 'teachers', 'students'));
     }
 
     /**
@@ -36,9 +42,34 @@ class AccountManagementController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function storeTeacher(Request $request)
+    public function storeTeacher(StoreTeacherRequest $request)
     {
-        return response()->noContent();
+        $credentials = $request->validated();
+
+        //$new_password = Str::random(8);
+        $new_password = '11111111';
+        $credentials['password'] = Hash::make($new_password);
+        $credentials['role'] = 'teacher';
+
+        // send to mail
+
+        $user = new User($credentials);
+        $user->save();
+        
+        $teacher_profile = new TeacherProfile([
+            'user_id' => $user->id,
+            'department_id' => $credentials['department']
+        ]);
+
+        $teacher_profile->save();
+
+        $alert = [
+            'message'   => 'New teacher has been created',
+            'type'      => 'success'
+        ];
+
+        return back()->with(['alert' => $alert]);
+
     }
     /**
      * Store a newly created resource in storage.

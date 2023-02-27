@@ -31,9 +31,17 @@
                 <a class="btn btn-success ms-2" href="{{route('admin.create-teacher')}}">New Teacher</a>
             </div>
 
-            @if (isset($users) && count($users) > 0)
+            {{-- No result --}}
+            @if (isset($users) && count($users) == 0)
+            <div class="alert alert-primary mt-5" role="alert">
+                <strong>No account exists.</strong>
+            </div>
+            @endif
+
+            {{-- teachers --}}
+            @if (isset($teachers) && count($teachers) > 0)
                 <div>
-                    <h4 class="fw-bold">Users: </h4>
+                    <h4 class="fw-bold">Teachers: </h4>
                     <div class="table-responsive ">
                         <table class="table table-bordered table-striped table-hover table-warning align-middle">
                             <thead class="table-warning">
@@ -45,10 +53,10 @@
                             </thead>
                             <tbody class="table-group-divider">
                                 <form action="">
-                                    @foreach ($users as $user)
-                                        <tr class="table-secondary">
-                                            <td>{{ $user->id }}</td>
-                                            <td>{{ $user->name }}</td>
+                                    @foreach ($teachers as $teacher)
+                                        <tr class="table-light">
+                                            <td>{{ $teacher->id }}</td>
+                                            <td>{{ $teacher->name }}</td>
                                             <td class="text-center"><a href="/"
                                                     class="btn btn-primary btn-sm px-4">Edit</a></td>
                                         </tr>
@@ -57,7 +65,38 @@
                             </tbody>
                         </table>
 
-                        {{ $users->links() }}
+                        {{ $teachers->links() }}
+                    </div>
+                </div>
+            @endif
+            {{-- teachers --}}
+            @if (isset($students) && count($students) > 0)
+                <div>
+                    <h4 class="fw-bold">Students: </h4>
+                    <div class="table-responsive ">
+                        <table class="table table-bordered table-striped table-hover table-info align-middle">
+                            <thead class="table-info">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Account Name</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                <form action="">
+                                    @foreach ($students as $student)
+                                        <tr class="table-light">
+                                            <td>{{ $student->id }}</td>
+                                            <td>{{ $student->name }}</td>
+                                            <td class="text-center"><a href="/"
+                                                    class="btn btn-primary btn-sm px-4">Edit</a></td>
+                                        </tr>
+                                    @endforeach
+                                </form>
+                            </tbody>
+                        </table>
+
+                        {{ $students->links() }}
                     </div>
                 </div>
             @endif

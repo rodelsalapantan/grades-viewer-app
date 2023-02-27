@@ -17,17 +17,14 @@ class Role
     public function handle(Request $request, Closure $next, ... $roles): Response
     {
         if(!Auth::check())
-            abort(403);
+            return redirect()->route('login');
 
         // get user
         $user = Auth::user(); 
 
-        foreach($roles as $role){
-            // check role if exist in user
-            if($role == $user->role)
-                return $next($request);
-        }
+        if (in_array($user->role, $roles)) 
+            return $next($request);
         
-        abort(403);
+        abort(403, 'Unauthorize');
     }
 }

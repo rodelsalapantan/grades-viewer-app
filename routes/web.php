@@ -23,10 +23,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');                                                            // landing page
 
 // register all auth routes, except register
-Auth::routes(['register' => false,]);
+Auth::routes(['register' => false]);
 
 // admin routes
-Route::prefix('admin')->group(function () {
+Route::group( [
+    'prefix' => 'admin',
+    'middleware' => ['role:admin', 'auth']
+], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.home');                                                 // admin index
 
     // Department Management
@@ -45,7 +48,19 @@ Route::prefix('admin')->group(function () {
 
     // Account Management 
     Route::get('/create-teacher', [AccountManagementController::class, 'createTeacher'])->name('admin.create-teacher');     // create teacher
+    Route::post('/store-teacher', [AccountManagementController::class, 'storeTeacher'])->name('admin.store-teacher');       // store teacher - single
+
     Route::get('/create-student', [AccountManagementController::class, 'createStudent'])->name('admin.create-student');     // create student
     Route::get('/view-accounts', [AccountManagementController::class, 'index'])->name('admin.view-accounts');               // view accounts
 
-})->middleware(['role:admin', 'auth']);
+});
+
+Route::group( [
+    'prefix' => 'teacher',
+    'middleware' => ['role:teacher', 'auth', 'verified']
+], function () {
+    Route::get('/', function(){
+        return view('pages.teacher.index');
+    })->name('teacher.home');
+            
+});

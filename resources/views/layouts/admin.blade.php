@@ -16,10 +16,12 @@
     <link rel="shortcut icon" href="{{ asset('img/grade-sheet.png') }}" type="image/x-icon">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
-
-    <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/admin-layout.css') }}">
+
+    {{-- Scripts --}}
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script> 
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -39,10 +41,10 @@
                     <span class="bi-menu-button-wide-fill me-2"></span> Dashboard</a>
                 <button
                     class="list-group-item list-group-item-action list-group-item-light p-3 
-                    {{ in_array( url()->current(), [
+                    {{ in_array(url()->current(), [
                         route('admin.view-accounts'),
                         route('admin.create-teacher'),
-                        route('admin.create-student')
+                        route('admin.create-student'),
                     ])
                         ? 'active'
                         : '' }}"
@@ -56,9 +58,7 @@
                     <li><a class="dropdown-item" href="{{ route('admin.create-student') }}">Create New Student</a></li>
                 </ul>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3 
-                    {{ url()->current() == route('admin.manage-department') || request()->is('admin/edit-dept/*')
-                        ? 'active'
-                        : '' }}"
+                    {{ url()->current() == route('admin.manage-department') || request()->is('admin/edit-dept/*') ? 'active' : '' }}"
                     href="{{ route('admin.manage-department') }}">
                     <span class="bi-building me-2"></span> Department Management
                 </a>

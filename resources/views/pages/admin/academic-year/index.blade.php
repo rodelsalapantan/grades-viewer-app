@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Manage Department | Admin')
+@section('title', 'Manage Academic Year| Admin')
 
 @section('content')
 

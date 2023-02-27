@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Department;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AccountManagementController extends Controller
@@ -12,7 +14,9 @@ class AccountManagementController extends Controller
      */
     public function index()
     {
-        return view('pages.admin.accounts-management.view-accounts');
+        $users = User::where('role', '!=', 'admin')->paginate(20);
+
+        return view('pages.admin.accounts-management.view-accounts', compact('users'));
     }
 
     /**
@@ -20,7 +24,8 @@ class AccountManagementController extends Controller
      */
     public function createTeacher()
     {
-        return view('pages.admin.accounts-management.create-teacher');
+        $departments = Department::all();
+        return view('pages.admin.accounts-management.create-teacher', compact('departments'));
     }
 
     public function createStudent()

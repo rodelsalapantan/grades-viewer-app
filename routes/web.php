@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AcademicYearController;
 use App\Http\Controllers\Admin\AccountManagementController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DepartmentManagementController;
+use App\Http\Controllers\Auth\NewUserResetPasswordController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -47,14 +48,17 @@ Route::group( [
     Route::delete('/edit-acad-year/{id}', [AcademicYearController::class, 'destroy'])->name('admin.delete-acad-year');      // delete
 
     // Account Management 
-    Route::get('/create-teacher', [AccountManagementController::class, 'createTeacher'])->name('admin.create-teacher');     // create teacher
-    Route::post('/store-teacher', [AccountManagementController::class, 'storeTeacher'])->name('admin.store-teacher');       // store teacher - single
-
-    Route::get('/create-student', [AccountManagementController::class, 'createStudent'])->name('admin.create-student');     // create student
     Route::get('/view-accounts', [AccountManagementController::class, 'index'])->name('admin.view-accounts');               // view accounts
+    // -- teacher
+    Route::get('/create-teacher', [AccountManagementController::class, 'createTeacher'])->name('admin.create-teacher');     // create teacher
+    Route::post('/store-teacher', [AccountManagementController::class, 'storeTeacher'])->name('admin.store-teacher');       // store teacher
+    // -- student
+    Route::get('/create-student', [AccountManagementController::class, 'createStudent'])->name('admin.create-student');     // create student
+    Route::post('/store-student', [AccountManagementController::class, 'storeStudent'])->name('admin.store-student');        // store student
 
 });
 
+// teacher routes
 Route::group( [
     'prefix' => 'teacher',
     'middleware' => ['role:teacher', 'auth', 'verified']
@@ -63,4 +67,18 @@ Route::group( [
         return view('pages.teacher.index');
     })->name('teacher.home');
             
+});
+
+
+// new user reset password
+Route::get('/new-user/reset-password/{token}/{email}', [NewUserResetPasswordController::class, 'create'])
+    ->middleware('guest')
+    ->name('new-user-reset-password');
+
+Route::put('/new-user/reset-password/', [NewUserResetPasswordController::class, 'updatePassword'])
+    ->middleware('guest')
+    ->name('update-new-user-password');;
+
+Route::get('/mail', function(){
+    return view('mail.new-student');
 });

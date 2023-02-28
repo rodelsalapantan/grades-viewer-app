@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreTeacherRequest;
-use App\Models\Department;
-use App\Models\TeacherProfile;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Department;
 use Illuminate\Support\Str;
+use App\Mail\NewStudentMail;
+use Illuminate\Http\Request;
+use App\Models\StudentProfile;
+use App\Models\TeacherProfile;
+use App\Http\Controllers\Controller;
+use App\Models\NewUserPasswordToken;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\Admin\StoreStudentRequest;
+use App\Http\Requests\Admin\StoreTeacherRequest;
 
 class AccountManagementController extends Controller
 {
@@ -46,22 +51,33 @@ class AccountManagementController extends Controller
     {
         $credentials = $request->validated();
 
+        // save new teacher
+
         //$new_password = Str::random(8);
-        $new_password = '11111111';
+        $new_password = '11111111'; // delete soon
         $credentials['password'] = Hash::make($new_password);
         $credentials['role'] = 'teacher';
-
-        // send to mail
 
         $user = new User($credentials);
         $user->save();
         
+        // save teacher profile
         $teacher_profile = new TeacherProfile([
             'user_id' => $user->id,
             'department_id' => $credentials['department']
         ]);
-
         $teacher_profile->save();
+
+        // save reset password token
+        $token = Str::random(30);
+        $new_user_token = new NewUserPasswordToken([
+            'token' => $token,
+            'email' => $credentials['email']
+        ]);
+        $new_user_token->save();
+
+        // send to mail
+        Mail::to($credentials['email'])->send(new NewStudentMail($user, $new_password, $token));
 
         $alert = [
             'message'   => 'New teacher has been created',
@@ -74,9 +90,33 @@ class AccountManagementController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function storeStudent(Request $request)
+    public function storeStudent(StoreStudentRequest $request)
     {
-        return response()->noContent();
+        $credentials = $request->validated();
+
+        //$new_password = Str::random(8);
+        $new_password = '11111111'; // delete soon
+        $credentials['password'] = Hash::make($new_password);
+        $credentials['role'] = 'student';
+
+        // send to mail
+
+        $user = new User($credentials);
+        $user->save();
+        
+        $student_profile = new StudentProfile([
+            'user_id' => $user->id,
+            'student_number' => $credentials['student_number']
+        ]);
+
+        $student_profile->save();
+
+        $alert = [
+            'message'   => 'New student has been created',
+            'type'      => 'success'
+        ];
+
+        return back()->with(['alert' => $alert]);
     }
 
     /**

@@ -8,6 +8,11 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
+                    
+                    @if (Session::has('alert'))
+                        @php $alert = Session::get('alert') @endphp
+                        <x-alert :type="$alert['type']" :message="$alert['message']" />
+                    @endif
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <input class="form-check-input" type="checkbox" name="remember" checked hidden>

@@ -62,15 +62,13 @@
                     href="{{ route('admin.manage-department') }}">
                     <span class="bi-building me-2"></span> Department Management
                 </a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3 
+                <a class="list-group-item list-group-item-action list-group-item-light p-3 border-bottom
                     {{ url()->current() == route('admin.manage-acad-year') || request()->is('admin/edit-acad-year/*')
                         ? 'active'
                         : '' }}"
                     href="{{ route('admin.manage-acad-year') }}">
                     <span class="bi-calendar-date me-2"></span> Manage Academic Year
                 </a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
             </div>
         </div>
         <!-- Page content wrapper-->

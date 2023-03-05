@@ -20,22 +20,23 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    Accounts Count: <span
+                    Accounts Count:
+                    <span
                         class="badge rounded-pill text-bg-success py-2 px-3">{{ count($users) > 0 ? count($users) : 0 }}</span>
                 </div>
             </div>
             <hr>
             <div class="d-flex justify-content-end align-items-center">
                 <span>Create new account?</span>
-                <a class="btn btn-primary ms-2" href="{{route('admin.create-student')}}">New Student</a>
-                <a class="btn btn-success ms-2" href="{{route('admin.create-teacher')}}">New Teacher</a>
+                <a class="btn btn-primary ms-2" href="{{ route('admin.create-student') }}">New Student</a>
+                <a class="btn btn-success ms-2" href="{{ route('admin.create-teacher') }}">New Teacher</a>
             </div>
 
             {{-- No result --}}
             @if (isset($users) && count($users) == 0)
-            <div class="alert alert-primary mt-5" role="alert">
-                <strong>No account exists.</strong>
-            </div>
+                <div class="alert alert-primary mt-5" role="alert">
+                    <strong>No account exists.</strong>
+                </div>
             @endif
 
             {{-- teachers --}}
@@ -48,7 +49,6 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Account Name</th>
-                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider">
@@ -57,8 +57,6 @@
                                         <tr class="table-light">
                                             <td>{{ $teacher->id }}</td>
                                             <td>{{ $teacher->name }}</td>
-                                            <td class="text-center"><a href="/"
-                                                    class="btn btn-primary btn-sm px-4">Edit</a></td>
                                         </tr>
                                     @endforeach
                                 </form>
@@ -87,9 +85,7 @@
                                     @foreach ($students as $student)
                                         <tr class="table-light">
                                             <td>{{ $student->id }}</td>
-                                            <td>{{ $student->name }}</td>
-                                            <td class="text-center"><a href="/"
-                                                    class="btn btn-primary btn-sm px-4">Edit</a></td>
+                                            <td>{{ $student->name }}</td>>
                                         </tr>
                                     @endforeach
                                 </form>

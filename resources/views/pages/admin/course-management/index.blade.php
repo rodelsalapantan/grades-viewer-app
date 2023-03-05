@@ -1,42 +1,48 @@
 @extends('layouts.admin')
 
-@section('title', 'Manage Academic Year| Admin')
+@section('title', 'Manage Courses | Admin')
 
 @section('content')
 
     <div class="row justify-content-center mx-0">
         <div>
-            @if (Session::has('alert'))
-                @php $alert = Session::get('alert') @endphp
+            @if (session('alert'))
+                @php $alert = session('alert') @endphp
                 <x-alert :type="$alert['type']" :message="$alert['message']" />
             @endif
 
             <div class="card">
-                <div class="card-header fw-bold fs-2">Manage Academic Year</div>
+                <div class="card-header fw-bold fs-2">Manage Courses</div>
 
                 <div class="card-body">
-                    Academic Year Count: <span
-                        class="badge rounded-pill text-bg-success py-2 px-3">{{ count($year_list) > 0 ? count($year_list) : 0 }}</span>
+                    Courses Count: <span
+                        class="badge rounded-pill text-bg-success py-2 px-3">{{ count($courses) > 0 ? count($courses) : 0 }}</span>
                 </div>
             </div>
             <div class="mt-5 mb-2">
-                <form action="{{ route('admin.store-acad-year') }}" method="post">
+                <form action="{{ route('admin.store-course') }}" method="post">
                     @csrf
                     <div class="mb-3">
-                        <h4 class="form-label fw-bold">Create New Academic Year: </h4>
+                        <h4 class="form-label fw-bold">Create New Course: </h4>
                         <div class="mb-3 mt-4">
-                            <label for="academic_year" class="form-label fw-bold">Academic Year: </label>
-                            <input id="academic_year" type="text" class="form-control" name="academic_year"
-                                placeholder="Enter academic year" value="{{ old('academic_year') }}">
-                            @error('academic_year')
+                            <label for="course_name" class="form-label fw-bold">Course Name: </label>
+                            <input id="course_name" type="text" class="form-control" name="course_name"
+                                placeholder="Enter academic year" value="{{ old('course_name') }}" required>
+                            @error('course_name')
                                 <small class="form-text text-danger fw-bold">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="semester" class="form-label fw-bold">Semester: </label>
-                            <input id="semester"type="text" class="form-control" name="semester" 
-                                placeholder="Enter Semester" value="{{ old('semester') }}">
-                            @error('semester')
+                            <label class="form-label fw-bold">Department: </label>
+                            <select class="form-select" name="department_id">
+                                <option selected disabled>Select one</option>
+                                @if($departments && count($departments) > 0)
+                                    @foreach ($departments as $department)
+                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            @error('department_id')
                                 <small class="form-text text-danger fw-bold">{{ $message }}</small>
                             @enderror
                         </div>
@@ -47,7 +53,7 @@
                 </form>
             </div>
 
-            @if (isset($year_list) && count($year_list) > 0)
+            @if (isset($courses) && count($courses) > 0)
                 <hr />
                 <div>
                     <h4 class="fw-bold">Academic Year List: </h4>
@@ -57,19 +63,19 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Academic Year</th>
-                                    <th>Semester</th>
+                                    <th>Department</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider">
                                 <form action="">
-                                    @foreach ($year_list as $year)
+                                    @foreach ($courses as $course)
                                         <tr class="table-primary">
-                                            <td>{{ $year->id }}</td>
-                                            <td>{{ $year->academic_year }}</td>
-                                            <td>{{ $year->semester }}</td>
+                                            <td>{{ $course->id }}</td>
+                                            <td>{{ $course->course_name }}</td>
+                                            <td>{{ $course->department_name }}</td>
                                             <td class="text-center"><a
-                                                    href="{{ route('admin.edit-acad-year', $year->id) }}"
+                                                    href="{{ route('admin.edit-course', $course->id) }}"
                                                     class="btn btn-primary btn-sm px-4">Edit</a></td>
                                         </tr>
                                     @endforeach

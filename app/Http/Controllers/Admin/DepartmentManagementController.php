@@ -43,15 +43,15 @@ class DepartmentManagementController extends Controller
         return view('pages.admin.department-management.edit', compact('dept', 'dept_list'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $dept = Department::find($id);
+        $dept = Department::find($request->id);
         if (!$dept) {
             abort(404);
         }
 
         $request->validate([
-            'name' => 'required|unique:departments,name,' . $id
+            'name' => 'required|unique:departments,name,' . $request->id
         ]);
 
         $dept->name = $request->name;

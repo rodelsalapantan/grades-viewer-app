@@ -1,34 +1,34 @@
 @extends('layouts.admin')
 
-@section('title', 'Manage Academic Year| Admin')
+@section('title', 'Manage Sections | Admin')
 
 @section('content')
 
     <div class="row justify-content-center mx-0">
         <div>
-            @if (Session::has('alert'))
-                @php $alert = Session::get('alert') @endphp
+            @if (session('alert'))
+                @php $alert = session('alert') @endphp
                 <x-alert :type="$alert['type']" :message="$alert['message']" />
             @endif
 
             <div class="card">
-                <div class="card-header fw-bold fs-2">Manage Academic Year</div>
+                <div class="card-header fw-bold fs-2">Manage Sections</div>
 
                 <div class="card-body">
                     Academic Year Count: <span
-                        class="badge rounded-pill text-bg-success py-2 px-3">{{ count($year_list) > 0 ? count($year_list) : 0 }}</span>
+                        class="badge rounded-pill text-bg-success py-2 px-3">{{ count($sections) > 0 ? count($sections) : 0 }}</span>
                 </div>
             </div>
             <div class="mt-5 mb-2">
-                <form action="{{ route('admin.store-acad-year') }}" method="post">
+                <form action="{{ route('admin.store-section') }}" method="post">
                     @csrf
                     <div class="mb-3">
-                        <h4 class="form-label fw-bold">Create New Academic Year: </h4>
+                        <h4 class="form-label fw-bold">Create New Section: </h4>
                         <div class="mb-3 mt-4">
-                            <label for="academic_year" class="form-label fw-bold">Academic Year: </label>
-                            <input id="academic_year" type="text" class="form-control" name="academic_year"
-                                placeholder="Enter academic year" value="{{ old('academic_year') }}">
-                            @error('academic_year')
+                            <label for="section_name" class="form-label fw-bold">Section Name: </label>
+                            <input id="section_name" type="text" class="form-control" name="section_name"
+                                placeholder="Enter academic year" value="{{ old('section_name') }}">
+                            @error('section_name')
                                 <small class="form-text text-danger fw-bold">{{ $message }}</small>
                             @enderror
                         </div>
@@ -47,7 +47,7 @@
                 </form>
             </div>
 
-            @if (isset($year_list) && count($year_list) > 0)
+            @if (isset($sections) && count($sections) > 0)
                 <hr />
                 <div>
                     <h4 class="fw-bold">Academic Year List: </h4>
@@ -63,13 +63,13 @@
                             </thead>
                             <tbody class="table-group-divider">
                                 <form action="">
-                                    @foreach ($year_list as $year)
+                                    @foreach ($sections as $section)
                                         <tr class="table-primary">
-                                            <td>{{ $year->id }}</td>
-                                            <td>{{ $year->academic_year }}</td>
-                                            <td>{{ $year->semester }}</td>
+                                            <td>{{ $section->id }}</td>
+                                            <td>{{ $section->section_name }}</td>
+                                            <td>{{ $section->semester }}</td>
                                             <td class="text-center"><a
-                                                    href="{{ route('admin.edit-acad-year', $year->id) }}"
+                                                    href="{{ route('admin.edit-sections', $section->id) }}"
                                                     class="btn btn-primary btn-sm px-4">Edit</a></td>
                                         </tr>
                                     @endforeach

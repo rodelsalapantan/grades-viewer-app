@@ -41,15 +41,15 @@ class AcademicYearController extends Controller
         return view('pages.admin.academic-year.edit', compact('year', 'year_list'));
     }
     
-    public function update(Request $request, $id){
-        $year = AcademicYear::find($id);
+    public function update(Request $request){
+        $year = AcademicYear::find($request->id);
         if (!$year) {
             abort(404);
         }
 
         $request->validate([
-            'academic_year' => 'required|unique:academic_years,academic_year,' . $id,
-            'semester' => 'required|unique:academic_years,semester,' . $id,
+            'academic_year' => 'required|unique:academic_years,academic_year,' . $request->id,
+            'semester' => 'required|unique:academic_years,semester,' . $request->id,
         ]);
 
         $year->academic_year = $request->academic_year;

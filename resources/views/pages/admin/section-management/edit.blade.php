@@ -6,8 +6,8 @@
 
     <div class="row justify-content-center mx-0">
         <div>
-            @if (Session::has('alert'))
-                @php $alert = Session::get('alert') @endphp
+            @if (session('alert'))
+                @php $alert = session('alert') @endphp
                 <x-alert :type="$alert['type']" :message="$alert['message']" />
             @endif
 
@@ -15,11 +15,6 @@
                 <div class="card-header fw-bold fs-2">Manage Academic Year</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
                     Academic Year Count: <span
                         class="badge rounded-pill text-bg-success py-2 px-3">{{ count($year_list) > 0 ? count($year_list) : 0 }}</span>
                 </div>
@@ -30,10 +25,9 @@
                     @method('DELETE')
                 </form>
 
-                <form action="{{ route('admin.update-acad-year') }}" method="post">
+                <form action="{{ route('admin.update-acad-year', $year->id) }}" method="post">
                     @csrf
                     @method('PUT')
-                    <input type="hidden" name="id" value="{{ $year->id }}">
 
                     <div class="mb-3 mt-4">
                         <label for="academic_year" class="form-label fw-bold">Academic Year: </label>

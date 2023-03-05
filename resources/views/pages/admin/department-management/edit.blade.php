@@ -30,9 +30,10 @@
                     @method('DELETE')
                 </form>
 
-                <form action="{{ route('admin.update-department', $dept->id) }}" method="post">
+                <form action="{{ route('admin.update-department') }}" method="post">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="id" value="{{$dept->id}}">
 
                     <div class="mb-3">
                         <h4 class="form-label fw-bold">Update Department: </h4>

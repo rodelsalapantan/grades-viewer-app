@@ -49,7 +49,7 @@
                         ? 'active'
                         : '' }}"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="bi-people-fill me-2"></span> Account Management <span
+                    <span class="bi-people-fill me-2"></span> Accounts <span
                         class="bi-caret-right-fill ms-auto"></span>
                 </button>
                 <ul class="dropdown-menu ms-2">
@@ -60,14 +60,29 @@
                 <a class="list-group-item list-group-item-action list-group-item-light p-3 
                     {{ url()->current() == route('admin.manage-department') || request()->is('admin/edit-dept/*') ? 'active' : '' }}"
                     href="{{ route('admin.manage-department') }}">
-                    <span class="bi-building me-2"></span> Department Management
+                    <span class="bi-building me-2"></span> Departments
                 </a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3 border-bottom
+                <a class="list-group-item list-group-item-action list-group-item-light p-3 
                     {{ url()->current() == route('admin.manage-acad-year') || request()->is('admin/edit-acad-year/*')
                         ? 'active'
                         : '' }}"
                     href="{{ route('admin.manage-acad-year') }}">
-                    <span class="bi-calendar-date me-2"></span> Manage Academic Year
+                    <span class="bi-calendar-date me-2"></span> Academic Year
+                </a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3 border-bottom
+                    {{ url()->current() == route('admin.manage-section') || request()->is('admin/edit-section/*') ? 'active' : '' }}"
+                    href="{{ route('admin.manage-section') }}">
+                    <span class="bi-folder me-2"></span> Sections
+                </a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3 border-bottom
+                    {{ url()->current() == route('admin.manage-year-level') || request()->is('admin/edit-year-level/*') ? 'active' : '' }}"
+                    href="{{ route('admin.manage-year-level') }}">
+                    <span class="bi-folder me-2"></span> Year Levels
+                </a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3 border-bottom
+                    {{ url()->current() == route('admin.manage-course') || request()->is('admin/edit-course/*') ? 'active' : '' }}"
+                    href="{{ route('admin.manage-course') }}">
+                    <span class="bi-folder me-2"></span> Courses
                 </a>
             </div>
         </div>
